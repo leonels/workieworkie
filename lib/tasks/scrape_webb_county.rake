@@ -25,27 +25,99 @@ namespace :scrape_webb_county do
   end # task
 
   desc 'Import Webb County jobs to database'
-  task :import => :environment do
+  task :import, [:jobs_to_import] => :environment do |t, args|
     puts "Importing jobs into database..."
+
+    if args[:jobs_to_import].kind_of?(Array)
+      
+      agent = Mechanize.new
+      url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
+      agent.get(url)
+
+      jobs = parse_webb_county agent, url
+
+      args[:jobs_to_import].each do |job|
+
+        # jobs.map{|job| puts job['link'] if job['link'] == j}
+        jobs.each do |j|
+          if j['link'] == job
+            new_job = Job.new
+            new_job.title = j['title']
+            new_job.salary = j['salary']
+            new_job.department = j['department']
+            new_job.origin = 'Webb County'
+            new_job.link = j['link']
+            new_job.save
+          end
+        end
+
+      end
+
+      puts "Total of #{args[:jobs_to_import].size} imported successfully."
+
+    else
+
+      agent = Mechanize.new
+      url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
+      agent.get(url)
+
+      jobs = parse_webb_county agent, url
+
+      jobs.each do |j|
+        job = Job.new
+        job.title = j['title']
+        job.salary = j['salary']
+        job.department = j['department']
+        job.origin = 'Webb County'
+        job.link = j['link']
+        job.save
+      end
+
+      puts "Total of #{jobs.count} imported successfully."
+
+    end
+  end # task
+
+  desc "Import only jobs not on database; update existing jobs currently online; delete jobs not online anymore"
+  task :update => :environment do
+    current_jobs = Job.where("origin = ?", 'Webb County')
+    puts "There is a total of #{current_jobs.count} Webb County jobs"
+    jobs_array = []
+    current_jobs.each do |job|
+      jobs_array << {
+            'title' => job.title, 
+            'salary' => job.salary, 
+            'department' => job.department,
+            'origin' => job.origin,
+            'link' => job.link
+          }
+    end
 
     agent = Mechanize.new
     url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
     agent.get(url)
+    source_jobs = parse_webb_county agent, url
 
-    jobs = parse_webb_county agent, url
+    if source_jobs.size > jobs_array.size
+      puts 'online has more, so need to go grab some'
+      ids_source = source_jobs.map{|j| j['link']}
+      ids_target = jobs_array.map{|j| j['link']}
 
-    jobs.each do |j|
-      job = Job.new
-      job.title = j['title']
-      job.salary = j['salary']
-      job.department = j['department']
-      job.origin = 'Webb County'
-      job.link = j['link']
-      job.save
+      # find jobs that are on webb county website but not on workie workie
+      a = []
+      a = ids_source - ids_target
+      puts "#{a.size} job(s) to add"      
+    else
+      puts 'our website has more'
     end
 
-    puts "Total of #{jobs.count} imported successfully."
-  end # task
+    if a.nil?
+
+    else
+      Rake::Task['scrape_webb_county:import'].invoke(a) unless a.nil?
+    end
+
+  end
 
 end # namespace 
 
