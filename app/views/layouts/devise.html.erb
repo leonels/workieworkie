@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RailsBoilerplate</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>    
+
+    <div class="container">
+      <%= "<p class='alert alert-info'>#{notice}</p>".html_safe if notice %>
+      <%= "<p class='alert alert-warning'>#{alert}</p>".html_safe if alert %>
+
+      <%= yield %>
+
+    </div><!-- /.container -->
+
+    <footer class="footer-sticky" style="margin:0;">
+      <div class="container">
+        <p class="text-center" style="margin:20px 0;">Don't have an account? <a href="#">Sign up today</a>.</p>
+      </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h1>
+  <%= @job.title %>
+  <small>title</small>
+</h1>
+
+<p>
+  <strong>Salary:</strong>
+  <%= @job.salary %>
+</p>
+
+<p>
+  <strong>Department:</strong>
+  <%= @job.department %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @job.link %>
+</p>
+
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>

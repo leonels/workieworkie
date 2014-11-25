@@ -1,0 +1,92 @@
+= README
+
+== Description
+
+Rails boilerplate includes Bootstrap, Devise, CanCan
+
+Root route points to a dashboard
+
+Styles
+* Bootstrap (Lumen theme http://bootswatch.com/) 
+
+To change the Bootstrap theme, delete the current bootstrap.css file and replace it by a new one from http://bootswatch.com
+
+Controllers
+* Dashboard
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+ruby 2.1.2p95 
+
+* System dependencies
+
+* Configuration
+
+== To-Do
+
+* Add seed data for development
+
+== Devise setup
+
+Model `User` is used for devise's users and is already configured in the routes. The command `rails g devise:views` has already been run to make Devise views available for customization. Devise views are available at app/views/devise.
+
+Some setup you must do manually if you haven't yet:
+
+1. Ensure you have defined default url options in your environments files. Here
+     is an example of default_url_options appropriate for a development environment
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+     In production, :host should be set to the actual host of your application.
+
+2. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+
+3. If you are deploying on Heroku with Rails 3.2 only, you may want to set:
+
+       config.assets.initialize_on_precompile = false
+
+     On config/application.rb forcing your application to not access the DB
+     or load models when precompiling your assets.
+
+= IMPORTANT 
+
+Check the `User` (app/models/user.rb) for any additional configuration options you might want to add, such as confirmable or lockable. If you add an option, be sure to inspect the migration file (db/migrate/0123456789_devise_create_users.rb) and uncomment the appropriate section. For example, if you add the confirmable option in the model, you'll need to uncomment the Confirmable section in the migration. Then run `rake db:migrate`
+
+== Places to change the App Name from
+
+**DEVISE**
+* devise layout app/views/layouts/devise.html.erb (title tag and heading)
+* app/views/devise/sessions/new.html.erb
+
+**CONFIG**
+* config/application.rb
+* config/initializers/session_store.rb
+
+* README.rdoc
+
+* application layout app/views/layouts/application.html.erb (title tag and heading)
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.
