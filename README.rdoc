@@ -87,6 +87,9 @@ Check the `User` (app/models/user.rb) for any additional configuration options y
 
 * ...
 
+== Further Reading
+
+[Commit Message Format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
