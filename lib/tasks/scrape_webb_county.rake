@@ -4,10 +4,6 @@ namespace :scrape_webb_county do
   task :import, [:job_ids] => :environment do |t, args|
     puts "Importing jobs into database..."
 
-    agent = Mechanize.new
-    url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
-    agent.get(url)
-
     # PSEUDOCODE
     # update jobs already on workieworkie
     # delete jobs not longer on source
@@ -16,7 +12,7 @@ namespace :scrape_webb_county do
     # if call comes from the update task and provides jobs as argument
     if args[:job_ids].kind_of?(Array)
 
-      parsed_jobs = parse_webb_county(agent, url)
+      parsed_jobs = load_jobs
 
       jobs = []
 
@@ -41,7 +37,7 @@ namespace :scrape_webb_county do
     # if it's just an import, not an update
     else
 
-      jobs = parse_webb_county agent, url
+      jobs = load_jobs
       save_jobs jobs
 
     end
@@ -71,10 +67,7 @@ namespace :scrape_webb_county do
           }
     end
 
-    agent = Mechanize.new
-    url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
-    agent.get(url)
-    source_jobs = parse_webb_county agent, url
+    source_jobs = load_jobs
 
     # if there are more jobs on source, than on workieworkie
     # that means we need to go and grab the new ones 
