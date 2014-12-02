@@ -5,18 +5,18 @@ module WebbCountyHelper
     url = "http://agency.governmentjobs.com/webbcounty/default.cfm"
     agent.get(url)
 
-    puts ""
-    puts ""
-    puts "********************************************"
-    puts "***** SCRAPING Jobs at Webb County *****"
-    puts "** #{url} **"
+    # puts ""
+    # puts ""
+    # puts "********************************************"
+    # puts "***** SCRAPING Jobs at Webb County *****"
+    # puts "** #{url} **"
 
     jobs = parse_webb_county agent, url
 
-    puts "** There is a total of #{jobs.count} job(s) **"
-    puts "********************************************"
-    puts ""
-    puts ""
+    # puts "** There is a total of #{jobs.count} job(s) **"
+    # puts "********************************************"
+    # puts ""
+    # puts ""
 
     # add a --verbose flag to output jobs to terminal
     # output_to_terminal jobs

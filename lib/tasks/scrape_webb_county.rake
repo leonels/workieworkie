@@ -3,10 +3,44 @@ include WebbCountyHelper
 
 namespace :scrape_webb_county do 
 
-  desc 'test'
-  task :run => :environment do 
-    jobs = load_jobs
-    puts jobs
+  #####################
+  # DELETE
+  # UPDATE
+  # ADD
+  #####################
+
+  desc 'load'
+  task :load => :environment do 
+    @jobs = load_jobs
+  end
+
+  desc 'delete'
+  task :delete => :environment do
+    jobs_original = load_jobs
+    jobs_site = Job.where("origin = ?", 'Webb County')
+
+    ids_original = jobs_original.map{|j| j['link']} 
+    ids_site = jobs_site.map{|j| j['link']} 
+
+    puts '-----------------------------'
+    puts "There are #{ids_original.size} job(s) on the Webb County website."
+    puts "There are #{ids_site.size} job(s) on WorkieWorkie."
+    puts '-----------------------------'
+    intersect = ids_original & ids_site
+    puts "#{intersect.size} jobs will be kept."
+    deleted = ids_site.size - intersect.size
+    puts "#{deleted} jobs will be deleted."
+    puts '-----------------------------'
+
+    # ids_original.each do |id|
+    #   should_i_delete = false
+    #   # ids_site.map { |j| puts j }
+    #   ids_site.each do |i|
+
+    #   end
+    #   le_array = ids_site.reject { |j| j != id }
+    #   puts le_array.size
+    # end
   end
 
   desc 'Import Webb County jobs to database'
@@ -51,15 +85,6 @@ namespace :scrape_webb_county do
 
     end
   end # task
-
-  desc 'Delete jobs'
-  # task :delete, [:jobs_to_delete] => :environment do |t, args|
-  task :delete => :environment do
-    puts 'Deleting jobs from database'
-
-    jobs = load_jobs
-
-  end
 
   desc "Import only jobs not on database; update existing jobs currently online; delete jobs not online anymore"
   task :update => :environment do
