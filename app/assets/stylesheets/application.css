@@ -15,7 +15,8 @@
  */
 
 body {
-	padding-top:50px
+	padding-top:50px;
+  font-size:18px;
 }
 
 /* application layout footer */
