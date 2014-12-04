@@ -24,33 +24,50 @@ namespace :scrape_webb_county do
 
     puts '-----------------------------'
     puts "There are #{ids_original.size} job(s) on the Webb County website."
-    puts "There are #{ids_site.size} job(s) on WorkieWorkie."
     puts '-----------------------------'
+
+    puts "There are #{ids_site.size} job(s) on WorkieWorkie from Webb County website."
+    puts '-----------------------------'
+
+    ###
+    ### =>  DELETE DUPLICATES
+    ###
+    duplicates = find_duplicates(ids_site)
+    puts "#{duplicates.size} jobs will be deleted because they are duplicates."
+    delete_duplicate_jobs(duplicates)
+    
+    # remove from the array too
+    ids_site = ids_site - duplicates
+    puts '-----------------------------'
+    
+    # finds the ones in common, 
+    # these are the ones we want to update
     intersect = ids_original & ids_site
-    puts "#{intersect.size} jobs will be kept."
-    deleted = ids_site.size - intersect.size
-    puts "#{deleted} jobs will be deleted."
+
+    # substract the ones in common,
+    # these are the ones that are not on Webb County Website
+    jobs_outdated = ids_site - intersect 
+    puts "#{jobs_outdated.size} job(s) will be deleted because they are no longer on Webb County website."
+    puts '-----------------------------'
+    
+    delete_jobs(jobs_outdated)
+
+    jobs_to_check_for_update = intersect
+    puts "#{jobs_to_check_for_update.size} job(s) will be kept and checked for updates."
     puts '-----------------------------'
 
-    # ids_original.each do |id|
-    #   should_i_delete = false
-    #   # ids_site.map { |j| puts j }
-    #   ids_site.each do |i|
+    jobs_to_add = ids_original - jobs_to_check_for_update
+    
+    puts "#{jobs_to_add.size} jobs will be added."
+    puts jobs_to_add.sort!
+    # save_jobs(jobs_to_add)
+    puts '-----------------------------'
 
-    #   end
-    #   le_array = ids_site.reject { |j| j != id }
-    #   puts le_array.size
-    # end
   end
 
   desc 'Import Webb County jobs to database'
   task :import, [:job_ids] => :environment do |t, args|
     puts "Importing jobs into database..."
-
-    # PSEUDOCODE
-    # update jobs already on workieworkie
-    # delete jobs not longer on source
-    # add new jobs
 
     # if call comes from the update task and provides jobs as argument
     if args[:job_ids].kind_of?(Array)
@@ -59,28 +76,13 @@ namespace :scrape_webb_county do
 
       jobs = []
 
-      # args[:job_ids] contains a list of links
-      args[:job_ids].each do |id|
-        # parsed_jobs.reject { |j| unless j['link'] == id }
-        # parsed_jobs.each do |j|
-        #   if j['link'] == id
-        #     jobs << {
-        #       'title' => j['title'],
-        #       'salary' => j['salary'],
-        #       'department' => j['department'],
-        #       'link' => j['link'],
-        #       'origin' => 'Webb County'
-        #     }
-        #   end
-        # end
-      end
-
       save_jobs jobs
 
     # if it's just an import, not an update
     else
 
       jobs = load_jobs
+      puts jobs
       save_jobs jobs
 
     end
