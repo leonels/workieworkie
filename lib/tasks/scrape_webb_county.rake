@@ -14,49 +14,51 @@ namespace :scrape_webb_county do
     @jobs = load_jobs
   end
 
-  desc 'delete'
-  task :delete => :environment do
-    jobs_original = load_jobs
-    jobs_site = Job.where("origin = ?", 'Webb County')
+  desc 'sync'
+  task :sync => :environment do
+    jobs_webb_county = load_jobs
+    jobs_workie = Job.where("origin = ?", 'Webb County')
 
-    ids_original = jobs_original.map{|j| j['link']} 
-    ids_site = jobs_site.map{|j| j['link']} 
+    ids_webb_county = jobs_webb_county.map{|j| j['link']} 
+    ids_workie = jobs_workie.map{|j| j['link']} 
 
     puts '-----------------------------'
-    puts "There are #{ids_original.size} job(s) on the Webb County website."
+    puts "There are #{ids_webb_county.size} job(s) on the Webb County website."
     puts '-----------------------------'
 
-    puts "There are #{ids_site.size} job(s) on WorkieWorkie from Webb County website."
+    puts "There are #{ids_workie.size} job(s) on WorkieWorkie from Webb County website."
     puts '-----------------------------'
 
     ###
     ### =>  DELETE DUPLICATES
     ###
-    duplicates = find_duplicates(ids_site)
+    duplicates = find_duplicates(ids_workie)
+    # remove from the array too
+    ids_workie = ids_workie - duplicates
     puts "#{duplicates.size} jobs will be deleted because they are duplicates."
     delete_duplicate_jobs(duplicates)
-    
-    # remove from the array too
-    ids_site = ids_site - duplicates
     puts '-----------------------------'
     
     # finds the ones in common, 
     # these are the ones we want to update
-    intersect = ids_original & ids_site
+    intersect = ids_webb_county & ids_workie
 
     # substract the ones in common,
     # these are the ones that are not on Webb County Website
-    jobs_outdated = ids_site - intersect 
+    jobs_outdated = ids_workie - intersect 
     puts "#{jobs_outdated.size} job(s) will be deleted because they are no longer on Webb County website."
     puts '-----------------------------'
     
+    ###
+    ### =>  OUTDATED
+    ###
     delete_jobs(jobs_outdated)
 
     jobs_to_check_for_update = intersect
     puts "#{jobs_to_check_for_update.size} job(s) will be kept and checked for updates."
     puts '-----------------------------'
 
-    jobs_to_add = ids_original - jobs_to_check_for_update
+    jobs_to_add = ids_webb_county - jobs_to_check_for_update
     
     puts "#{jobs_to_add.size} jobs will be added."
     puts jobs_to_add.sort!
