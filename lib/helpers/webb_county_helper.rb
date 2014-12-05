@@ -108,10 +108,47 @@ module WebbCountyHelper
     title_split.last
   end
 
+  # jobs param is supposed to be an array of 
+  # job hashes 
+  def save_jobs(jobs, only_these=nil)
+    if only_these.nil?
+      jobs.each do |j|
+        job = Job.new
+        job.title = j['title']
+        job.salary = j['salary']
+        job.department = j['department']
+        job.origin = 'Webb County'
+        job.link = j['link']
+        job.save
+      end
+      puts "Total of #{jobs.size} saved successfully."
+    else
+      only_these.each do |o|
+        # 'ANY' RETURNS A BOOLEAN
+        # what = jobs.any? {|h| h['link'] == o}
+        
+        # 'DETECT' RETURNS THE HASH ELEMENT ITSELF
+        j = jobs.detect {|h| h['link'] == o}
+        job = Job.new
+        job.title = j['title']
+        job.salary = j['salary']
+        job.department = j['department']
+        job.origin = 'Webb County'
+        job.link = j['link']
+        job.save
+      end
+      puts "Total of #{only_these.size} saved successfully."
+    end
+    #
+    #  add a VERBOSE flag, to output total or not
+    #
+  end
+
   # jobs param is supposed to be an array of links
-  def save_jobs(jobs)
+  # THIS FUNCTION DOESNT WORK YET
+  def update_jobs(jobs)
     jobs.each do |j|
-      job = Job.new
+      job = Job.where(link: j['link'])
       job.title = j['title']
       job.salary = j['salary']
       job.department = j['department']

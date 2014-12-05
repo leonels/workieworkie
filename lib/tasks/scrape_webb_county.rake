@@ -42,6 +42,8 @@ namespace :scrape_webb_county do
     # finds the ones in common, 
     # these are the ones we want to update
     intersect = ids_webb_county & ids_workie
+     #update_jobs(intersect)
+     # jobs = load_jobs(intersect)
 
     # substract the ones in common,
     # these are the ones that are not on Webb County Website
@@ -61,7 +63,7 @@ namespace :scrape_webb_county do
     jobs_to_add = ids_webb_county - jobs_to_check_for_update
     
     puts "#{jobs_to_add.size} jobs will be added."
-    puts jobs_to_add.sort!
+    Rake::Task['scrape_webb_county:import'].invoke(jobs_to_add) unless jobs_to_add.empty?
     # save_jobs(jobs_to_add)
     puts '-----------------------------'
 
@@ -71,25 +73,27 @@ namespace :scrape_webb_county do
   task :import, [:job_ids] => :environment do |t, args|
     puts "Importing jobs into database..."
 
-    # if call comes from the update task and provides jobs as argument
+    # import only the jobs specified 
     if args[:job_ids].kind_of?(Array)
 
-      parsed_jobs = load_jobs
+      jobs = load_jobs
 
-      jobs = []
+      save_jobs(jobs, args[:job_ids])
+      puts "#{args[:job_ids].size} jobs where added."
 
-      save_jobs jobs
-
-    # if it's just an import, not an update
+    # import all jobs from webb county website
     else
 
       jobs = load_jobs
       puts jobs
       save_jobs jobs
+      puts "#{jobs.size} jobs where added."
 
     end
   end # task
 
+  # I BELIEVE THIS WHOLE TASK BELOW MUST BE DELETED
+  # FUNCTIONALITY IS ON sync TASK NOW
   desc "Import only jobs not on database; update existing jobs currently online; delete jobs not online anymore"
   task :update => :environment do
     current_jobs = Job.where("origin = ?", 'Webb County')
