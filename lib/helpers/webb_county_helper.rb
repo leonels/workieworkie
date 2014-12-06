@@ -145,21 +145,19 @@ module WebbCountyHelper
   end
 
   # jobs param is supposed to be an array of links
-  # THIS FUNCTION DOESNT WORK YET
-  def update_jobs(jobs)
-    jobs.each do |j|
-      job = Job.where(link: j['link'])
-      job.title = j['title']
-      job.salary = j['salary']
-      job.department = j['department']
-      job.origin = 'Webb County'
-      job.link = j['link']
-      job.save
+  def update_jobs(jobs, only_these)
+    only_these.each do |o|
+      # 'DETECT' RETURNS THE HASH ELEMENT ITSELF
+      j = jobs.detect {|h| h['link'] == o}
+      job = Job.where(link: o)
+      job[0].title = j['title']
+      job[0].salary = j['salary']
+      job[0].department = j['department']
+      job[0].origin = 'Webb County'
+      job[0].link = j['link']
+      job[0].save
     end
-    #
-    #  add a VERBOSE flag, to output total or not
-    #
-    puts "Total of #{jobs.size} saved successfully."
+    puts "Total of #{jobs.size} updated successfully."
   end
 
   # jobs param is supposed to be an array of links
@@ -179,6 +177,7 @@ module WebbCountyHelper
       job = Job.where(link: d)
       job[1].destroy
     end
+    puts "#{jobs.size} job(s) deleted because they are duplicates."
   end
 
   # jobs param is supposed to be an array of links
@@ -191,6 +190,7 @@ module WebbCountyHelper
         j.destroy
       end
     end
+    puts "#{jobs.size} job(s) deleted because they are no longer on Webb County website."
   end
 
   def remove_comma_and_everything_after(text)
