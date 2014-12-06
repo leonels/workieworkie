@@ -3,12 +3,6 @@ include WebbCountyHelper
 
 namespace :scrape_webb_county do 
 
-  #####################
-  # DELETE
-  # UPDATE
-  # ADD
-  #####################
-
   desc 'sync'
   task :sync => :environment do
     jobs_webb_county = load_jobs
@@ -36,9 +30,11 @@ namespace :scrape_webb_county do
     
     # finds the ones in common, 
     # these are the ones we want to update
+    ### 
+    ### =>  UPDATE EXISTING JOBS
+    ### 
     intersect = ids_webb_county & ids_workie
     update_jobs(jobs_webb_county, intersect)
-    # jobs = load_jobs(intersect)
 
     # substract the ones in common,
     # these are the ones that are not on Webb County Website
@@ -46,20 +42,21 @@ namespace :scrape_webb_county do
     puts '-----------------------------'
     
     ###
-    ### =>  OUTDATED
+    ### =>  REMOVE OUTDATED
     ###
     delete_jobs(jobs_outdated)
     puts '-----------------------------'
 
     jobs_to_check_for_update = intersect
-    puts "#{jobs_to_check_for_update.size} job(s) will be kept and checked for updates."
     puts '-----------------------------'
 
     jobs_to_add = ids_webb_county - jobs_to_check_for_update
     
+    ### 
+    ### =>  ADD NEW JOBS
+    ### 
     puts "#{jobs_to_add.size} jobs will be added."
     Rake::Task['scrape_webb_county:import'].invoke(jobs_to_add) unless jobs_to_add.empty?
-    # save_jobs(jobs_to_add)
     puts '-----------------------------'
 
   end
