@@ -5,7 +5,11 @@ class JobsController < ApplicationController
 
   def index
     @jobs = Job.order('updated_at DESC')
-    respond_with(@jobs)
+    # respond_with(@jobs)
+    respond_to do |format|
+      format.html
+      format.json { render :json => @jobs}
+    end
   end
 
   def show

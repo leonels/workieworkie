@@ -2,6 +2,37 @@
 
 <p>Currently listing <%= @jobs.count %> jobs.</p>
 
+
+<div ng-controller="SearchCtrl">
+
+  <p>
+    Search: <input ng-model="query">
+  </p>
+
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Added</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="job in jobs | filter:query">
+        <td>
+          <strong>{{job.origin}}</strong>
+          {{job.title}}
+        </td>
+        <td>{{job.created_at}}</td>
+        <td><a href="{{job.link}}">Show</a></td>
+      </tr>
+    </tbody>
+</table>
+</div>
+
+
+
+
 <table class="table table-striped table-bordered table-hover">
   <thead>
     <tr>

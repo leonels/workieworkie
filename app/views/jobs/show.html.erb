@@ -21,5 +21,15 @@
   <%= @job.link %>
 </p>
 
+<p>
+  <strong>Last Updated:</strong>
+  <%= @job.updated_at %>
+</p>
+
+<p>
+	<strong>Added:</strong>
+	<%= @job.created_at %>
+</p>
+
 <%= link_to 'Edit', edit_job_path(@job) %> |
 <%= link_to 'Back', jobs_path %>
