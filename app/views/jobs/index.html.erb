@@ -1,4 +1,4 @@
-<p class="lead"><strong>Workie Workie</strong> is possible the best place to find and list current jobs postings in Laredo, Texas. We include job postings from the City of Laredo, Laredo Community College and Webb County. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a></p>
+<p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list current jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a></p>
 
 <div ng-controller="SearchCtrl">
 
@@ -8,6 +8,7 @@
       <form role="form">
         <input type="search" class="form-control" placeholder="Search" ng-model="query">
 
+        <!--
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="originFilter['City of Laredo']" ng-click="leLog()">
@@ -28,34 +29,79 @@
             Webb County
           </label>
         </div>
+        -->
+
       </form>
 
     </div>
     <div class="col-md-6">
       <p class="pull-right"><a class="btn btn-primary">Post a job: $100 for 30 days</a></p>
     </div>
-  </div>
+  </div><!-- /.row .well -->
+
+  <p>{{originFilter}}</p>
+  <ul>
+    <li ng-repeat="origin in originFilter">{{origin}}</li>
+  </ul>
+
+  <ul class="list-unstyled">
+    <li ng-repeat="origin in origins">
+      <a href="#" ng-click="setCurrentOrigin(origin)" ng-class="{'btn-primary':isCurrentOrigin(origin)}">{{origin.name}}</a>
+    </li>
+    <li><a href="#" ng-click="setCurrentOrigin(null)">Reset</a></li>
+  </ul>
+
+  <p>{{whata}}</p>
+
+  <pre>{{notFilteredJobs}}</pre>
 
   <p class="pull-right">
-    Currently listing <%= @jobs.count %> jobs.
+    Total jobs: <%= @jobs.count %>.
+  </p>
+
+  <p>
+    Number of jobs currently displayed by your search: {{filteredJobs.length}}.
   </p>
 
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
         <th>
-          <a href="" ng-click="predicate = 'title'">
+          <a href="" ng-click="predicate = 'title'; setReverse()">
             Title 
-            <span class="glyphicon glyphicon-arrow-up"></span>
+            <span 
+                class="glyphicon glyphicon-arrow-up" 
+                ng-if="reverse && predicate == 'title'">
+            </span>
+            <span 
+                class="glyphicon glyphicon-arrow-down" 
+                ng-if="!reverse && predicate == 'title'">
+            </span>
           </a>
         </th>
         <th>
-          <a href="" ng-click="predicate = 'created_at'">Added</a>
+          <a href="" ng-click="predicate = 'created_at'; setReverse()">
+            Added
+            <span 
+                class="glyphicon glyphicon-arrow-up" 
+                ng-if="reverse && predicate == 'created_at'">
+            </span>
+            <span 
+                class="glyphicon glyphicon-arrow-down" 
+                ng-if="!reverse && predicate == 'created_at'">
+            </span>
+          </a>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="job in jobs | filter:query | orderBy:predicate">
+      <tr ng-repeat="job in 
+        (filteredJobs = 
+            ( jobs | 
+            filter:query | 
+            filter:{origin:currentOrigin.name} | 
+            orderBy:predicate:reverse )
+        )">
         <td>
           <a href="/jobs/{{job.id}}">{{job.title}}</a>
           <span class="text-muted">{{job.origin}}</span>
