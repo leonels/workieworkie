@@ -1,6 +1,31 @@
+require "#{Rails.root}/lib/helpers/lcc_helper"
+require "#{Rails.root}/lib/helpers/tasks_helper"
+
+include LccHelper
+include TasksHelper
+
 require 'open-uri'
 
 namespace :scrape_lcc do
+
+  desc 'sync LCC'
+  task :sync => :environment do
+
+    jobs_lcc = load_lcc_jobs
+    jobs_workie = Job.where("origin =?", 'Laredo Community College')
+
+    ids_lcc = jobs_lcc.map{|j| j['link']}
+    ids_workie = jobs_workie.map{|j| j['link']}
+
+    puts '-----------------------------'
+    puts "There are #{ids_lcc.size} job(s) on the LCC website."
+    puts '-----------------------------'
+
+    puts "There are #{ids_workie.size} job(s) on WorkieWorkie from LCC website."
+    puts '-----------------------------'
+
+  end
+
   desc 'Scrape LCC jobs and output results to terminal'
   task :run => :environment do
 

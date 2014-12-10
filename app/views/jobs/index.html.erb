@@ -1,30 +1,69 @@
-<p class="lead"><strong>Workie Workie</strong> is the best place to find and list current jobs postings in Laredo, Texas. We include job postings from the City of Laredo, Laredo Community College and Webb County. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a></p>
-
-<p>Currently listing <%= @jobs.count %> jobs.</p>
-
+<p class="lead"><strong>Workie Workie</strong> is possible the best place to find and list current jobs postings in Laredo, Texas. We include job postings from the City of Laredo, Laredo Community College and Webb County. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a></p>
 
 <div ng-controller="SearchCtrl">
 
-  <p>
-    Search: <input ng-model="query">
-  </p>
+  <div class="row well">
+    <div class="col-md-6">
+      
+      <form role="form">
+        <input type="search" class="form-control" placeholder="Search" ng-model="query">
 
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="originFilter['City of Laredo']" ng-click="leLog()">
+            City of Laredo
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="originFilter['Laredo Community College']" ng-click="leLog()">
+            Laredo Community College
+          </label>
+        </div>
+        
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="originFilter['Webb County']" ng-click="leLog()">
+            Webb County
+          </label>
+        </div>
+      </form>
+
+    </div>
+    <div class="col-md-6">
+      <p class="pull-right"><a class="btn btn-primary">Post a job: $100 for 30 days</a></p>
+    </div>
+  </div>
+
+  <p class="pull-right">
+    Currently listing <%= @jobs.count %> jobs.
+  </p>
+<button type="button" class="btn btn-default" aria-label="Left Align">
+  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
+</button>
+
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
+</button>
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Added</th>
-        <th></th>
+        <th>
+          <a href="" ng-click="predicate = 'title'">Title <span class="glyphicon glyphicon-sort-by-attributes"></span></a>
+        </th>
+        <th>
+          <a href="" ng-click="predicate = 'created_at'">Added</a>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="job in jobs | filter:query">
+      <tr ng-repeat="job in jobs | filter:query | orderBy:predicate">
         <td>
-          <strong>{{job.origin}}</strong>
-          {{job.title}}
+          <a href="/jobs/{{job.id}}">{{job.title}}</a>
+          <span class="text-muted">{{job.origin}}</span>
         </td>
-        <td>{{job.created_at}}</td>
-        <td><a href="{{job.link}}">Show</a></td>
+        <td>{{job.created_at | date:'MMM dd'}}</td>
       </tr>
     </tbody>
 </table>
@@ -32,7 +71,7 @@
 
 
 
-
+<!--
 <table class="table table-striped table-bordered table-hover">
   <thead>
     <tr>
@@ -55,7 +94,10 @@
     <% end %>
   </tbody>
 </table>
+-->
 
 <br>
 
+<!--
 <%= link_to 'New Job', new_job_path %>
+-->

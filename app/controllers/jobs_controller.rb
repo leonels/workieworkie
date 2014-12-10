@@ -1,6 +1,8 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :edit, :update, :destroy]
 
+  skip_before_filter :authenticate_user! , :only => [:index, :show]
+
   respond_to :html
 
   def index

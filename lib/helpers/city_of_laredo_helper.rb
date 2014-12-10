@@ -1,5 +1,67 @@
 module CityOfLaredoHelper
 
+  def load_city_jobs
+    agent = Mechanize.new
+    url = "http://agency.governmentjobs.com/laredo/default.cfm"
+    agent.get(url)
+
+    jobs = parse_city_of_laredo agent, url
+    
+    jobs
+  end
+
+  # jobs param is supposed to be an array of links
+  def update_jobs_city(jobs, only_these)
+    only_these.each do |o|
+      # 'DETECT' RETURNS THE HASH ELEMENT ITSELF
+      j = jobs.detect {|h| h['link'] == o}
+      job = Job.where(link: o)
+      job[0].title = j['title']
+      job[0].salary = j['salary']
+      job[0].department = j['department']
+      job[0].origin = 'City of Laredo'
+      job[0].link = j['link']
+      job[0].save
+    end
+    puts "Total of #{jobs.size} updated successfully."
+  end
+
+  # jobs param is supposed to be an array of 
+  # job hashes 
+  def save_jobs_city(jobs, only_these=nil)
+    if only_these.nil?
+      jobs.each do |j|
+        job = Job.new
+        job.title = j['title']
+        job.salary = j['salary']
+        job.department = j['department']
+        job.origin = 'City of Laredo'
+        job.link = j['link']
+        job.save
+      end
+      puts "Total of #{jobs.size} saved successfully."
+    else
+      only_these.each do |o|
+        # 'ANY' RETURNS A BOOLEAN
+        # what = jobs.any? {|h| h['link'] == o}
+        
+        # 'DETECT' RETURNS THE HASH ELEMENT ITSELF
+        j = jobs.detect {|h| h['link'] == o}
+        job = Job.new
+        job.title = j['title']
+        job.salary = j['salary']
+        job.department = j['department']
+        job.origin = 'City of Laredo'
+        job.link = j['link']
+        job.save
+      end
+      puts "Total of #{only_these.size} saved successfully."
+    end
+    #
+    #  add a VERBOSE flag, to output total or not
+    #
+  end
+
   def clean_string string
     string.gsub!(/\r?\t?\n?/, '')
     string.gsub('Department:', '')

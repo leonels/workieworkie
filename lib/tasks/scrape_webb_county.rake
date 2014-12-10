@@ -1,5 +1,8 @@
 require "#{Rails.root}/lib/helpers/webb_county_helper"
+require "#{Rails.root}/lib/helpers/tasks_helper"
+
 include WebbCountyHelper
+include TasksHelper
 
 namespace :scrape_webb_county do 
 
@@ -34,7 +37,7 @@ namespace :scrape_webb_county do
     ### =>  UPDATE EXISTING JOBS
     ### 
     intersect = ids_webb_county & ids_workie
-    update_jobs(jobs_webb_county, intersect)
+    update_jobs_webb(jobs_webb_county, intersect)
 
     # substract the ones in common,
     # these are the ones that are not on Webb County Website

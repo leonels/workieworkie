@@ -2,8 +2,14 @@
 <html ng-app="SearcherApp">
 <head>
   <title>Workie Workie - Jobs in Laredo, Texas</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= 
+    # stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true 
+    stylesheet_link_tag    'application', media: 'all' 
+  %>
+  <%= 
+    # javascript_include_tag 'application', 'data-turbolinks-track' => true 
+    javascript_include_tag 'application'
+  %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -19,17 +25,24 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
+            <% if user_signed_in? %>
             <li>
               <%= link_to 'Dashboard', dashboard_index_url %>
             </li>
+            <% end %>
             <li>
               <%= link_to 'Jobs', jobs_url %>
             </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "My Profile (#{current_user.email})", current_user %></li>
-            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+            <% if user_signed_in? %>
+              <li><%= link_to "My Profile (#{current_user.email})", current_user %></li>
+              <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+            <% else %>
+              <li><%= link_to "Sign up", new_user_registration_path %></li>
+              <li><%= link_to "Login", new_user_session_path %></li>
+            <% end %>
           </ul>
 
         </div>
@@ -43,8 +56,8 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12">
             
-            <p class="notice"><%= notice %></p>
-            <p class="alert"><%= alert %></p>
+            <%= "<p class=\"notice\">#{notice}</p>" if notice %>
+            <%= "<p class=\"alert\">#{alert}</p>" if alert %>
 
             <%= yield %>
           </div>
@@ -55,15 +68,13 @@
         <div class="row">
           <div class="col-lg-12">
             <ul class="list-unstyled">
-              <li class="pull-right"><a href="#top">Le Right Bottom Link</a></li>
-              <li><%= link_to 'Dashboard', dashboard_index_url %></li>
-              <li><a href="https://github.com/thomaspark/bootswatch/">GitHub</a></li>
-              <li><a href="../help/#api">API</a></li>
-              <li><a href="../help/#support">Help</a></li>
+              <% if user_signed_in? %>
+                <li><%= link_to 'Dashboard', dashboard_index_url %></li>
+              <% end %>
+              <li><%= link_to 'Jobs', jobs_url %></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
             </ul>
-            <p>Made by <a href="http://LeWebsite.me" rel="nofollow">Le Name</a>. Contact him at <a href="mailto:le.email@bootswatch.com">le.email@bootswatch.com</a>.</p>
-            <!-- <p>Code released under the <a href="https://github.com/thomaspark/bootswatch/blob/gh-pages/LICENSE">MIT License</a>.</p> -->
-            <p>Based on <a href="http://getbootstrap.com" rel="nofollow">Bootstrap</a> (<a href="http://bootswatch.com/" target="_blank">Lumen theme</a>). Icons from <a href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts" rel="nofollow">Google</a>.</p>
           </div>
         </div>
       </footer>

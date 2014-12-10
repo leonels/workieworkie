@@ -1,9 +1,17 @@
+<%= link_to '&#8592; Back to all jobs'.html_safe, jobs_path %>
+
 <p id="notice"><%= notice %></p>
 
 <h1>
   <%= @job.title %>
   <small><%= @job.origin %></small>
 </h1>
+
+<!--
+<p>
+  <%= link_to 'Edit', edit_job_path(@job) %>
+</p>
+-->
 
 <p>
   <strong>Department:</strong>
@@ -23,13 +31,16 @@
 
 <p>
   <strong>Last Updated:</strong>
-  <%= @job.updated_at %>
+  <%= time_ago_in_words(@job.updated_at) %> ago
+  <span class="text-muted">
+    <%= @job.updated_at.strftime('%b %d %Y @ %I:%M%P') %>
+  </span>
 </p>
 
 <p>
 	<strong>Added:</strong>
-	<%= @job.created_at %>
+  <%= time_ago_in_words(@job.created_at) %> ago
+  <span class="text-muted">
+    <%= @job.created_at.strftime('%b %d %Y @ %I:%M%P') %>
+  </span>
 </p>
-
-<%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Back', jobs_path %>
