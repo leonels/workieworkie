@@ -39,18 +39,15 @@
   <p class="pull-right">
     Currently listing <%= @jobs.count %> jobs.
   </p>
-<button type="button" class="btn btn-default" aria-label="Left Align">
-  <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
-</button>
 
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star
-</button>
   <table class="table table-striped table-bordered table-hover">
     <thead>
       <tr>
         <th>
-          <a href="" ng-click="predicate = 'title'">Title <span class="glyphicon glyphicon-sort-by-attributes"></span></a>
+          <a href="" ng-click="predicate = 'title'">
+            Title 
+            <span class="glyphicon glyphicon-arrow-up"></span>
+          </a>
         </th>
         <th>
           <a href="" ng-click="predicate = 'created_at'">Added</a>
