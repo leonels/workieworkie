@@ -19,11 +19,15 @@ angular.module("SearcherApp")
 
     	$scope.jobs = Job.query();
 
+        $scope.today = new Date();
+        $scope.todayFormatted = $filter('date')($scope.today, 'MMM dd yy');
+
         // $scope.notFilteredJobs = Job.query();
         // jsonJobs = JSON.stringify($scope.notFilteredJobs[0]);
         // $scope.leNumber = _.countBy(jsonJobs, 'origin');
 
-    	$scope.reverse = false;
+    	$scope.predicate = 'created_at'
+        $scope.reverse = true;
 
     	var setReverse = function () {
     		if($scope.reverse == false){

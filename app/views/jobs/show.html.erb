@@ -4,8 +4,14 @@
 
 <h1>
   <%= @job.title %>
-  <small><%= @job.origin %></small>
 </h1>
+
+<small>
+  <span class="text-muted">
+    Added <%= time_ago_in_words(@job.created_at) %> ago;
+    <%= @job.created_at.strftime('%b %d %Y @ %I:%M%P') %>
+  </span>
+</small>
 
 <!--
 <p>
@@ -13,34 +19,28 @@
 </p>
 -->
 
+<dl class="dl-horizontal" style="margin:25px 0;">
+
+  <dt>Organization:</dt>
+  <dd><%= @job.origin %></dd>
+
+  <dt>Location:</dt>
+  <dd><%= @job.city %>, Texas</dd>
+
+  <dt>Department:</dt>
+  <dd><%= @job.department %><dd>
+
+  <dt>Salary:</dt>
+  <dd><%= @job.salary %></dd>
+
+</dl>
+
 <p>
-  <strong>Department:</strong>
-  <%= @job.department %>
+  <%= link_to 'Learn more or apply', @job.link, class: 'btn btn-primary' %>
 </p>
 
-
-<p>
-  <strong>Salary:</strong>
-  <%= @job.salary %>
-</p>
-
-<p>
-  <strong>Link:</strong>
-  <%= @job.link %>
-</p>
-
-<p>
-  <strong>Last Updated:</strong>
+<small>
+  Last checked for updates:
   <%= time_ago_in_words(@job.updated_at) %> ago
-  <span class="text-muted">
     <%= @job.updated_at.strftime('%b %d %Y @ %I:%M%P') %>
-  </span>
-</p>
-
-<p>
-	<strong>Added:</strong>
-  <%= time_ago_in_words(@job.created_at) %> ago
-  <span class="text-muted">
-    <%= @job.created_at.strftime('%b %d %Y @ %I:%M%P') %>
-  </span>
-</p>
+</small>
