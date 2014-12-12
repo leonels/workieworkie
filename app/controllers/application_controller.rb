@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
   private
 
   def select_layout
-  	devise_controller? ? 'devise' : 'application'
+  	if devise_controller?
+  		'devise'
+  	elsif params[:controller] == 'jobs' and params[:action] == 'index'
+  		'search'
+  	else
+  		'application'
+  	end
   end
 end
