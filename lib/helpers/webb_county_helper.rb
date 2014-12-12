@@ -117,6 +117,7 @@ module WebbCountyHelper
         job.title = j['title']
         job.salary = j['salary']
         job.department = j['department']
+        job.city = 'Laredo'
         job.origin = 'Webb County'
         job.link = j['link']
         job.save
@@ -133,6 +134,7 @@ module WebbCountyHelper
         job.title = j['title']
         job.salary = j['salary']
         job.department = j['department']
+        job.city = 'Laredo'
         job.origin = 'Webb County'
         job.link = j['link']
         job.save
@@ -153,6 +155,7 @@ module WebbCountyHelper
       job[0].title = j['title']
       job[0].salary = j['salary']
       job[0].department = j['department']
+      job[0].city = 'Laredo'
       job[0].origin = 'Webb County'
       job[0].link = j['link']
       job[0].save

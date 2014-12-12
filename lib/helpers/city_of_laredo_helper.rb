@@ -19,6 +19,7 @@ module CityOfLaredoHelper
       job[0].title = j['title']
       job[0].salary = j['salary']
       job[0].department = j['department']
+      job[0].city = 'Laredo'
       job[0].origin = 'City of Laredo'
       job[0].link = j['link']
       job[0].save
@@ -35,6 +36,7 @@ module CityOfLaredoHelper
         job.title = j['title']
         job.salary = j['salary']
         job.department = j['department']
+        job.city = 'Laredo'
         job.origin = 'City of Laredo'
         job.link = j['link']
         job.save
@@ -51,6 +53,7 @@ module CityOfLaredoHelper
         job.title = j['title']
         job.salary = j['salary']
         job.department = j['department']
+        job.city = 'Laredo'
         job.origin = 'City of Laredo'
         job.link = j['link']
         job.save
