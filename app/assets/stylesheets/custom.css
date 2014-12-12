@@ -1,0 +1,11 @@
+/*
+ * Custom styles
+ */
+
+footer.footer-sticky {
+  background-color: black;
+}
+
+footer.footer-sticky ul.list-unstyled li {
+  margin-bottom: 0;
+}

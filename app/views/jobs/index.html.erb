@@ -1,4 +1,4 @@
-<p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list current jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a></p>
+<p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list current jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a>, <a href="#" target="_blank">Facebook</a> and <a href="#" target="_blank">Google+</a>.</p>
 
 <div ng-controller="SearchCtrl">
 
@@ -8,29 +8,6 @@
       <form role="form">
         <input type="search" class="form-control" placeholder="Search" ng-model="query">
 
-        <!--
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="originFilter['City of Laredo']" ng-click="leLog()">
-            City of Laredo
-          </label>
-        </div>
-
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="originFilter['Laredo Community College']" ng-click="leLog()">
-            Laredo Community College
-          </label>
-        </div>
-        
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="originFilter['Webb County']" ng-click="leLog()">
-            Webb County
-          </label>
-        </div>
-        -->
-
       </form>
 
     </div>
@@ -39,23 +16,25 @@
     </div>
   </div><!-- /.row .well -->
 
-  <p>{{originFilter}}</p>
-  <ul>
-    <li ng-repeat="origin in originFilter">{{origin}}</li>
-  </ul>
+  <div class="btn-group" role="group">
+    <button 
+      type="button" 
+      class="btn btn-default"
+      ng-click="setCurrentOrigin(null)">
+      All
+    </button>
+    <button 
+      ng-repeat="origin in origins"
+      type="button" 
+      class="btn btn-default" 
+      ng-repeat="origin in origins" 
+      ng-click="setCurrentOrigin(origin)" 
+      ng-class="{'active':isCurrentOrigin(origin)}">
+      {{origin.name}}
+    </button>
+  </div>
 
-  <ul class="list-unstyled">
-    <li ng-repeat="origin in origins">
-      <a href="#" ng-click="setCurrentOrigin(origin)" ng-class="{'btn-primary':isCurrentOrigin(origin)}">{{origin.name}}</a>
-    </li>
-    <li><a href="#" ng-click="setCurrentOrigin(null)">Reset</a></li>
-  </ul>
-
-  <h1>{{leResponse}}</h1>
-
-  <h1>{{leNumber}}</h1>
-
-  <pre>{{jsonJobs}}</pre>
+  <p></p>
 
   <p class="pull-right">
     Total jobs: <%= @jobs.count %>.
