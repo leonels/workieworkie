@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require angular
 //= require angular-resource
+//= require lodash
 // require turbolinks
 //= require_tree .

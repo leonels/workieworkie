@@ -19,7 +19,23 @@ angular.module("SearcherApp")
 
     	$scope.jobs = Job.query();
 
+        // $scope.leArray = [
+        //     {
+        //         name: 'John', age: 30
+        //     },
+        //     {
+        //         name: 'Jane', age: 30
+        //     },
+        //     {
+        //         name: 'Leo', age:33
+        //     }
+        // ]
+        // $scope.leResponse = _.countBy($scope.leArray, 'age');
+        // $scope.leResponse = $scope.leArray;
         $scope.notFilteredJobs = Job.query();
+        jsonJobs = JSON.stringify($scope.notFilteredJobs[0]);
+        $scope.leNumber = _.countBy(jsonJobs, 'origin');
+        // $scope.leNumber = $scope.notFilteredJobs;
 
     	$scope.reverse = false;
 
@@ -63,8 +79,8 @@ angular.module("SearcherApp")
         $scope.setCurrentOrigin = setCurrentOrigin;
         $scope.isCurrentOrigin = isCurrentOrigin;
 
-        var whata = $filter('filter')($scope.notFilteredJobs, { origin: 'City of Laredo' });
-        $scope.whata = whata;
+        // var whata = $filter('filter')($scope.notFilteredJobs, { origin: 'City of Laredo' });
+        // $scope.whata = whata;
 
     	var leLog = function () {
     		console.log($scope.jobs);
