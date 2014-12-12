@@ -4,15 +4,23 @@
     class="page-header" 
     style="
       background-image: url('wood_pattern.png'); 
-      padding:60px 0;">
+      padding:60px 0;
+      margin:0;">
     <div class="container">
       <div 
         class="well col-md-6 col-md-offset-3"
         style="
           background:rgba(255,255,255,0.70);
-          border:0;">
+          border:0;
+          margin-bottom:0;">
+        <h1 class="text-uppercase" style="font-size:28px;margin-top:0;">Search for jobs</h1>
         <form role="form">
-          <input type="search" class="form-control" placeholder="Search" ng-model="query">
+          <input 
+            type="search" 
+            class="form-control" 
+            placeholder="Computer Tech..." 
+            ng-model="query"
+            style="font-size:24px;height:56px;padding:10px 20px;">
         </form>
       </div><!-- /.well -->
     </div>
@@ -41,14 +49,6 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
-  
-      <div>
-        <p class="pull-right"><a class="btn btn-primary">Post a job: $100 for 30 days</a></p>
-      </div>
-
-      <p class="pull-right">
-        Total jobs: <%= @jobs.count %>.
-      </p>
 
       <!--
       <p>

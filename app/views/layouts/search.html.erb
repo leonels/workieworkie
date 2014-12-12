@@ -14,33 +14,57 @@
 </head>
 <body>
 
+  <div class="navbar" style="border: 1px solid #e7e7e7;">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-          
-          <%= "<p class=\"notice\">#{notice}</p>" if notice %>
-          <%= "<p class=\"alert\">#{alert}</p>" if alert %>
-
-          <p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list current jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a>, <a href="#" target="_blank">Facebook</a> and <a href="#" target="_blank">Google+</a>.</p>
-
-        </div>
+      <div class="navbar-header">
+        <a href="../" class="navbar-brand">Workie Workie</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
       </div>
-    </div><!-- /.container -->
+      <div class="navbar-collapse collapse" id="navbar-main">
 
-    <%= yield %>
-
-    <footer class="footer-sticky" style="margin:0;">
-      <div class="container">
-        <ul class="list-unstyled" style="margin:20px 0;">
-          <% if user_signed_in? %>
-            <li><%= link_to 'Dashboard', dashboard_index_url %></li>
-          <% end %>
-          <li><%= link_to 'Jobs', jobs_url %></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#">Post a job: $100 for 30 days</a>
+          </li>
         </ul>
+
       </div>
-    </footer>
+    </div>
+  </div>
+    
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        
+        <%= "<p class=\"notice\">#{notice}</p>" if notice %>
+        <%= "<p class=\"alert\">#{alert}</p>" if alert %>
+
+        <p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a>, <a href="#" target="_blank">Facebook</a> and <a href="#" target="_blank">Google+</a>.</p>
+
+      </div>
+    </div>
+  </div><!-- /.container -->
+
+  <%= yield %>
+
+  <footer class="footer-sticky" style="margin:0;">
+    <div class="container">
+      <ul class="list-unstyled" style="margin:20px 0;">
+        <% if user_signed_in? %>
+          <li><%= link_to 'Dashboard', dashboard_index_url %></li>
+        <% end %>
+        <li><%= link_to 'Jobs', jobs_url %></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="pull-right">Currently listing <%= @jobs.count %> jobs.</li>
+      </ul>
+    </div>
+  </footer>
 
 </body>
 </html>
