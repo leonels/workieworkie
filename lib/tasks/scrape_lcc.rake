@@ -12,7 +12,7 @@ namespace :scrape_lcc do
   task :sync => :environment do
 
     jobs_lcc = load_lcc_jobs
-    jobs_workie = Job.where("origin =?", 'Laredo Community College')
+    jobs_workie = Job.where("origin = ?", 'Laredo Community College')
 
     ids_lcc = jobs_lcc.map{|j| j['link']}
     ids_workie = jobs_workie.map{|j| j['link']}
@@ -24,116 +24,63 @@ namespace :scrape_lcc do
     puts "There are #{ids_workie.size} job(s) on WorkieWorkie from LCC website."
     puts '-----------------------------'
 
+    ###
+    ### =>  DELETE DUPLICATES
+    ###
+    duplicates = find_duplicates(ids_workie)
+    # remove from the array too
+    ids_workie = ids_workie - duplicates
+    delete_duplicate_jobs(duplicates)
+    puts '-----------------------------'
+
+    # finds the ones in common, 
+    # these are the ones we want to update
+    ### 
+    ### =>  UPDATE EXISTING JOBS
+    ### 
+    intersect = ids_lcc & ids_workie
+    update_jobs_lcc(jobs_lcc, intersect)
+
+    # substract the ones in common,
+    # these are the ones that are not on Webb County Website
+    jobs_outdated = ids_workie - intersect 
+    puts '-----------------------------'
+
+    ###
+    ### =>  REMOVE OUTDATED
+    ###
+    delete_jobs(jobs_outdated)
+    puts '-----------------------------'
+
+    jobs_to_check_for_update = intersect
+    puts '-----------------------------'
+
+    jobs_to_add = ids_lcc - jobs_to_check_for_update
+
+    ### 
+    ### =>  ADD NEW JOBS
+    ### 
+    puts "#{jobs_to_add.size} jobs will be added."
+    Rake::Task['scrape_lcc:import'].invoke(jobs_to_add) unless jobs_to_add.empty?
+    puts '-----------------------------'
+
   end
 
-  desc 'Scrape LCC jobs and output results to terminal'
-  task :run => :environment do
-
-    url = "http://www.laredo.edu/HumanRes/wraper.php"
-    puts "*****************************************************"
-    puts "***** SCRAPING Jobs at Laredo Community College *****"
-    puts "Scraping #{url}..."
-
-    agent = Mechanize.new
-    
-    agent.get(url)
-
-    doc = Nokogiri::HTML(open(url).read)
-
-    jobs = parse_lcc 'table.tablesorter tbody', doc
-    output_lcc jobs
-    jobs = parse_lcc 'table.tablesorter1 tbody', doc
-    output_lcc jobs
-    jobs = parse_lcc 'table.tablesorter2 tbody', doc
-    output_lcc jobs
-
-    puts "Scrape finished successfully."
-
+  desc 'Import Laredo Community College jobs to database'
+  task :import, [:job_ids] => :environment do |t, args|
+    puts "Importing jobs into database..."
+    # import only the jobs specified 
+    if args[:job_ids].kind_of?(Array)
+      jobs = load_lcc_jobs
+      save_jobs_lcc(jobs, args[:job_ids])
+      puts "#{args[:job_ids].size} jobs where added."
+    # import all jobs from webb county website
+    else
+      jobs = load_lcc_jobs
+      puts jobs
+      save_jobs_lcc jobs
+      puts "#{jobs.size} jobs where added."
+    end
   end # task
 
-  desc 'Import LCC jobs to database'
-  task :import => :environment do
-    url = "http://www.laredo.edu/HumanRes/wraper.php"
-    puts "*****************************************************"
-    puts "***** SCRAPING Jobs at Laredo Community College *****"
-    puts "Scraping #{url}..."
-
-    agent = Mechanize.new
-    
-    agent.get(url)
-
-    doc = Nokogiri::HTML(open(url).read)
-
-    puts "Importing jobs into database..."
-    jobs = parse_lcc 'table.tablesorter tbody', doc
-    jobs.each do |j|
-      job = Job.new
-      job.title = j['title']
-      job.salary = j['salary']
-      job.department = j['department']
-      job.origin = 'Laredo Community College'
-      job.link = j['link']
-      job.save
-    end
-    
-    jobs = parse_lcc 'table.tablesorter1 tbody', doc
-    jobs.each do |j|
-      job = Job.new
-      job.title = j['title']
-      job.salary = j['salary']
-      job.department = j['department']
-      job.origin = 'Laredo Community College'
-      job.link = j['link']
-      job.save
-    end
-    
-    jobs = parse_lcc 'table.tablesorter2 tbody', doc
-    jobs.each do |j|
-      job = Job.new
-      job.title = j['title']
-      job.salary = j['salary']
-      job.department = j['department']
-      job.origin = 'Laredo Community College'
-      job.link = j['link']
-      job.save
-    end
-
-    puts "Import finished successfully."
-  end
-
 end # namespace
-
-def parse_lcc table_selector, doc
-  puts "Parsing table in progress..."
-  table = doc.css(table_selector)
-
-  jobs = []
-  c = 1
-  number = (table.css('a')).count
-  number.times do 
-    title = table.css("td:nth-child(#{c})").text.strip
-    salary = table.css("td:nth-child(#{c+1})").text.strip
-    department =  table.css("td:nth-child(#{c+2})").text.strip
-    link = (table.css("td:nth-child(#{c})")).at_css('a')[:href]
-    link = "http://www.laredo.edu/HumanRes/#{link}"
-
-    c += 5
-    jobs << {
-      'title' => title, 
-      'salary' => salary, 
-      'department' => department,
-      'link' => link
-    }
-  end
-  return jobs
-end
-
-def output_lcc jobs
-  jobs.each do |job|
-    puts "TITLE: #{job['title']}"
-    puts "SALARY: #{job['salary']}"
-    puts "DEPARTMENT: #{job['department']}"
-    puts "LINK: #{job['link']}"
-    puts "----------------------------------"
-  end
-end

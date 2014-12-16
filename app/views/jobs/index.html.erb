@@ -18,7 +18,7 @@
           <input 
             type="search" 
             class="form-control" 
-            placeholder="Computer Tech..." 
+            placeholder="Job title..." 
             ng-model="query"
             style="font-size:24px;height:56px;padding:10px 20px;">
         </form>
@@ -50,13 +50,15 @@
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
 
-      <!--
-      <p>
+      <!-- <p>
         Number of jobs currently displayed by your search: {{filteredJobs.length}}.
-      </p>
-      -->
+      </p> -->
+      
+      <h2 class="text-center" ng-if="filteredJobs.length < 1">
+        No jobs meet your search criteria.
+      </h2>
 
-      <table class="table table-striped table-hover">
+      <table class="table table-striped table-hover" ng-show="filteredJobs.length >= 1">
         <thead>
           <tr>
             <th>

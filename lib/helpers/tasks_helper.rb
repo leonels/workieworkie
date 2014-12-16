@@ -15,7 +15,7 @@ module TasksHelper
       # because it always holds more than one job
       # so think of a better variable/array name
       job = Job.where(link: d)
-      job[1].destroy
+      puts "**Successful delete**" if job[1].destroy
     end
     puts "#{jobs.size} job(s) deleted because they are duplicates."
   end

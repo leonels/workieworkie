@@ -8,6 +8,7 @@ namespace :scrape_webb_county do
 
   desc 'sync'
   task :sync => :environment do
+    
     jobs_webb_county = load_jobs
     jobs_workie = Job.where("origin = ?", 'Webb County')
 
