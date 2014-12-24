@@ -1,2 +1,28 @@
-<h1>Dashboard#index</h1>
-<p class="lead">Find me in app/views/dashboard/index.html.erb</p>
+<h1>Dashboard</h1>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Department</th>
+      <th>Updated</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td>
+          <strong><%= job.origin %></strong>
+          <%= link_to job.title, job.link %>
+        </td>
+        <td><%= job.department %></td>
+        <td><%= job.updated_at.strftime('%b %d @ %I:%M %P') %></td>
+        <td>Added <%= time_ago_in_words(job.created_at) %> ago on <%= job.created_at.strftime('%b %d @ %I:%M %P') %></td>
+        <td><%= link_to 'Show', job %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

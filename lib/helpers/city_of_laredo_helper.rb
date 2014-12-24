@@ -70,13 +70,15 @@ module CityOfLaredoHelper
     string.gsub('Department:', '')
   end
 
-  def get_job(url)
+  def get_city_job(url)
     agent = Mechanize.new
     agent.get(url)
     table = agent.page.search('table[summary="Job Information"]')
     # table.search('tr').each do |tr|
     #   puts tr
     # end
+    puts '==============='
+    puts table
     clean_string(table.search('tr:nth-last-child(2)').text)
   end
 
@@ -160,7 +162,7 @@ module CityOfLaredoHelper
     end # recordset.times 
 
     jobs.each do |job|
-      department = get_job(job['link'])
+      department = get_city_job(job['link'])
       job['department'] = department
     end
   end # parse_city_of_laredo

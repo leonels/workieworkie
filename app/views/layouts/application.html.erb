@@ -13,8 +13,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-    <!--
-    <div class="navbar navbar-default navbar-fixed-top">
+
+    <!-- <div class="navbar navbar-fixed-top"> -->
+    <div class="navbar" style="border: 1px solid #e7e7e7;">
       <div class="container">
         <div class="navbar-header">
           <a href="../" class="navbar-brand">Workie Workie</a>
@@ -49,36 +50,13 @@
         </div>
       </div>
     </div>
-    -->
-
-    <div class="navbar" style="border: 1px solid #e7e7e7;">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="../" class="navbar-brand">Workie Workie</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
-
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="#">Post a job: $100 for 30 days</a>
-            </li>
-          </ul>
-
-        </div>
-      </div>
-    </div>
 
     <div class="container">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
           
-          <%= "<p class=\"notice\">#{notice}</p>" if notice %>
-          <%= "<p class=\"alert\">#{alert}</p>" if alert %>
+          <%= "<p class=\"notice\">#{notice}</p>".html_safe if notice %>
+          <%= "<p class=\"alert\">#{alert}</p>".html_safe if alert %>
 
           <%= yield %>
         </div>

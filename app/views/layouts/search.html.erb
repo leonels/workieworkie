@@ -28,8 +28,15 @@
 
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="#">Post a job: $100 for 30 days</a>
+            <%= link_to 'Post a job: $100 for 30 days', contact_url %>
           </li>
+          <% if user_signed_in? %>
+            <li>
+              <%= link_to 'Dashboard', dashboard_index_url %>
+            </li>
+            <li><%= link_to "My Profile (#{current_user.email})", current_user %></li>
+            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+          <% end %>
         </ul>
 
       </div>
@@ -41,8 +48,8 @@
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12">
         
-        <%= "<p class=\"notice\">#{notice}</p>" if notice %>
-        <%= "<p class=\"alert\">#{alert}</p>" if alert %>
+        <%= "<div class=\"alert alert-info\" role=\"alert\">#{notice}</div>".html_safe if notice %>
+        <%= "<div class=\"alert alert-warning\" role=\"alert\">#{alert}</p>".html_safe if alert %>
 
         <p class="lead"><strong>Workie Workie</strong> is probably the best place to find and list jobs postings in Laredo, Texas. Follow us on Twitter <a href="#" target="_blank">@workieworkie</a>, <a href="#" target="_blank">Facebook</a> and <a href="#" target="_blank">Google+</a>.</p>
 
@@ -59,9 +66,7 @@
           <li><%= link_to 'Dashboard', dashboard_index_url %></li>
         <% end %>
         <li><%= link_to 'Jobs', jobs_url %></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li class="pull-right">Currently listing <%= @jobs.count %> jobs.</li>
+        <li><%= link_to 'Contact', contact_url %></li>
       </ul>
     </div>
   </footer>
