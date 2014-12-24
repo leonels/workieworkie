@@ -18,6 +18,10 @@ body {
 	/* padding-top:50px; */
 }
 
+table.table tbody tr td a {
+  text-decoration: underline;
+}
+
 /* application layout footer */
 footer{margin:5em 0}
 footer li{float:left;margin-right:1.5em;margin-bottom:1.5em}
