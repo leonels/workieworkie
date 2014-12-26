@@ -19,7 +19,7 @@ namespace :scrape_webb_county do
     puts "There are #{ids_webb_county.size} job(s) on the Webb County website."
     puts '-----------------------------'
 
-    puts "There are #{ids_workie.size} job(s) on WorkieWorkie from Webb County website."
+    puts "There are #{ids_workie.size} job(s) on Wurkies from Webb County website."
     puts '-----------------------------'
 
     ###

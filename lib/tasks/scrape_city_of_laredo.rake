@@ -18,7 +18,7 @@ namespace :scrape_city_of_laredo do
     puts "There are #{ids_city.size} job(s) on the City of Laredo website."
     puts '-----------------------------'
 
-    puts "There are #{ids_workie.size} job(s) on WorkieWorkie from City of Laredo website."
+    puts "There are #{ids_workie.size} job(s) on Wurkies from City of Laredo website."
     puts '-----------------------------'
 
     ###

@@ -21,7 +21,7 @@ namespace :scrape_lcc do
     puts "There are #{ids_lcc.size} job(s) on the LCC website."
     puts '-----------------------------'
 
-    puts "There are #{ids_workie.size} job(s) on WorkieWorkie from LCC website."
+    puts "There are #{ids_workie.size} job(s) on Wurkies from LCC website."
     puts '-----------------------------'
 
     ###
