@@ -6,7 +6,7 @@
 # Don't declare `role :all`, it's a meta role
 set :stage, :production
 
-server '198.58.103.144', user: 'deploy', roles: %w{webb app}
+server '198.58.103.144', user: 'deploy', roles: %w{web app}
 
 # role :app, %w{deploy@example.com}
 # role :web, %w{deploy@example.com}
