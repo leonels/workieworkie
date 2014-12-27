@@ -1,7 +1,7 @@
 angular.module("SearcherApp")
-	.factory("Job", function ($resource){
+	.factory("Job", ['$resource', function ($resource){
 		return $resource("/jobs.json");
-});
+}]);
 
 angular.module("SearcherApp")
     .controller("SearchCtrl", function($scope, $filter, Job) {
