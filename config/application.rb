@@ -23,10 +23,5 @@ module Wurkies
     # http://www.erikminkel.com/2013/09/01/twitter-bootstrap-3-in-a-rails-4-application/
     config.assets.paths << "#{Rails}/app/assets/fonts"
 
-    # http://stackoverflow.com/questions/19840540/bootstrap-glyphicons-error-404-in-production
-    config.assets.paths << Rails.root.join("app", "assets", "fonts")
-
-    # http://stackoverflow.com/questions/25342533/bootstrap-3-rails-4-glyphicons-not-getting-picked-up-in-production
-    config.assets.precompile += %w( *.eot *.svg *.ttf *.woff *.otf)
   end
 end
