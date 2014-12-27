@@ -1,1 +1,1 @@
-angular.module("SearcherApp", ["ngResource"])
+angular.module("SearcherApp", ["ngResource"]);
