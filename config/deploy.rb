@@ -2,8 +2,10 @@
 lock '3.1.0'
 
 set :application, 'wurkies'
-# set :repo_url, 'git@github.com:leonels/workieworkie.git'
-set :repo_url, 'https://github.com/leonels/workieworkie.git'
+set :ssh_options, { :forward_agent => true }
+set :repo_url, 'git@github.com:leonels/workieworkie.git'
+# set :repo_url, 'https://github.com/leonels/workieworkie.git'
+
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
