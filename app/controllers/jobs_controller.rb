@@ -3,6 +3,8 @@ class JobsController < ApplicationController
 
   skip_before_filter :authenticate_user! , :only => [:index, :show]
 
+  before_filter :set_title
+
   respond_to :html
 
   def index
@@ -15,6 +17,7 @@ class JobsController < ApplicationController
   end
 
   def show
+    set_title(@job.title)
     respond_with(@job)
   end
 
@@ -49,5 +52,9 @@ class JobsController < ApplicationController
 
     def job_params
       params.require(:job).permit(:title, :salary, :department, :link)
+    end
+
+    def set_title(page_title = 'Jobs in Laredo Texas')
+      @page_title = page_title
     end
 end
