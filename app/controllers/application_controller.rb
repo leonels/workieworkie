@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   	if devise_controller?
   		'devise'
   	elsif (params[:controller] == 'jobs' and params[:action] == 'index') or
-      params[:controller] == 'jobs' and params[:action] == 'show'
+      (params[:controller] == 'jobs' and params[:action] == 'show')
   		'search'
     elsif params[:controller] == 'static'
       'search'
