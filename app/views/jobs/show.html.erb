@@ -1,3 +1,7 @@
+<div class="container" style="margin-top:10px;">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
 <%= link_to '&#8592; Back to all jobs'.html_safe, jobs_path %>
 
 <p id="notice"><%= notice %></p>
@@ -44,3 +48,7 @@
   <%= time_ago_in_words(@job.updated_at) %> ago
     <%= @job.updated_at.strftime('%b %d %Y @ %I:%M%P') %>
 </small>
+
+    </div>
+  </div>
+</div>

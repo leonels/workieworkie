@@ -1,9 +1,9 @@
 module LccHelper
 
   def load_lcc_jobs
-    agent = Mechanize.new
+    # agent = Mechanize.new
     url = "http://www.laredo.edu/HumanRes/wraper.php"
-    agent.get(url)
+    # agent.get(url)
 
     doc = Nokogiri::HTML(open(url).read)
     table_selector = 'table.tablesorter tbody'

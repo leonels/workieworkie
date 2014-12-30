@@ -77,8 +77,8 @@ module CityOfLaredoHelper
     # table.search('tr').each do |tr|
     #   puts tr
     # end
-    puts '==============='
-    puts table
+    # puts '==============='
+    # puts table
     clean_string(table.search('tr:nth-last-child(2)').text)
   end
 
