@@ -34,7 +34,7 @@ gem 'devise'
 gem 'nokogiri'
 gem 'mechanize'
 
-gem 'selenium-webdriver', "~> 2.38.0"
+gem 'selenium-webdriver'
 gem 'watir-webdriver'
 
 gem 'capistrano', '~> 3.1.0'
