@@ -1,40 +1,82 @@
-require 'rubygems'
-require 'selenium-webdriver'
+require "#{Rails.root}/lib/helpers/uisd_helper"
 
-desc 'testing selenium'
-task :sync => :environment do
-  driver = Selenium::WebDriver.for :firefox
-  driver.navigate.to 'http://www.applitrack.com/unitedisd/onlineapp/default.aspx?all=1'
+include UisdHelper
 
-  puts driver.title
+namespace :scrape_uisd do
 
-  wait = Selenium::WebDriver::Wait.new(:timeout => 10)
-  wait.until { driver.find_element(:id, 'AppliTrackListContent') }
+  desc 'sync UISD'
+  task :sync => :environment do
+    jobs_uisd = load_uisd_jobs
+    puts jobs_uisd
 
-  content = driver.find_element(:id, 'AppliTrackListContent')
-  # puts content.text
+    jobs_workie = Job.where("origin = ?", 'United ISD')
 
-  # content.find_elements(:class => 'title').each do |e|
-  #   title = e.text
-  #   puts title
-  # end
+    ids_uisd = jobs_uisd.map{|j| j['link']}
+    ids_workie = jobs_workie.map{|j| j['link']}
 
-  content.find_elements(:css => 'table').each do |table|
-    title = table.find_element(:class => 'title')
-    puts title.text
+    puts '-----------------------------'
+    puts "There are #{ids_uisd.size} job(s) on the United ISD website."
+    puts '-----------------------------'
 
-    # dept = table.find_element(:css => 'span.normal:nth-of-type(3)')
-    dept = table.find_element(:css => 'tr:nth-child(8) td span.normal')
-    puts "#{dept.text}"
+    puts "There are #{ids_workie.size} job(s) on Wurkies from United ISD website."
+    puts '-----------------------------'
 
-    details = table.find_element(:css => 'div.AppliTrackJobPostingAttachments ul li a')
-    puts details.attribute('href')
-    puts '---------------------------'
-  end  
+    ###
+    ### =>  DELETE DUPLICATES
+    ###
+    duplicates = find_duplicates(ids_workie)
+    # remove from the array too
+    ids_workie = ids_workie - duplicates
+    delete_duplicate_jobs(duplicates)
+    puts '-----------------------------'  
 
-  driver.quit
+    # finds the ones in common, 
+    # these are the ones we want to update
+    ### 
+    ### =>  UPDATE EXISTING JOBS
+    ### 
+    intersect = ids_uisd & ids_workie
+    update_jobs_uisd(jobs_uisd, intersect)
 
-  # js_code = "return document.getElementsByTagName('div')"
-  # elements = browser.execute_script(js_code)
-  # elements.each{|e| puts e.text }
+    # substract the ones in common,
+    # these are the ones that are not on United ISD Website
+    jobs_outdated = ids_workie - intersect 
+    puts '-----------------------------'
+
+    ###
+    ### =>  REMOVE OUTDATED
+    ###
+    delete_jobs(jobs_outdated)
+    puts '-----------------------------'
+
+    jobs_to_check_for_update = intersect
+    puts '-----------------------------'
+
+    jobs_to_add = ids_uisd - jobs_to_check_for_update
+
+    ### 
+    ### =>  ADD NEW JOBS
+    ### 
+    puts "#{jobs_to_add.size} jobs will be added."
+    Rake::Task['scrape_uisd:import'].invoke(jobs_to_add) unless jobs_to_add.empty?
+    puts '-----------------------------'
+  end
+
+  desc 'Import United ISD jobs to database'
+  task :import, [:job_ids] => :environment do |t, args|
+    puts "Importing jobs into database..."
+    # import only the jobs specified 
+    if args[:job_ids].kind_of?(Array)
+      jobs = load_uisd_jobs
+      save_jobs_uisd(jobs, args[:job_ids])
+      puts "#{args[:job_ids].size} jobs where added."
+    # import all jobs from webb county website
+    else
+      jobs = load_uisd_jobs
+      puts jobs
+      save_jobs_uisd jobs
+      puts "#{jobs.size} jobs where added."
+    end
+  end # task  
+
 end

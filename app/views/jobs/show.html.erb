@@ -34,8 +34,10 @@
   <dt>Department:</dt>
   <dd><%= @job.department %><dd>
 
-  <dt>Salary:</dt>
-  <dd><%= @job.salary %></dd>
+  <% if @job.salary.present? %>
+    <dt>Salary:</dt>
+    <dd><%= @job.salary %></dd>
+  <% end %>
 
 </dl>
 

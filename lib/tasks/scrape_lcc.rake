@@ -42,7 +42,7 @@ namespace :scrape_lcc do
     update_jobs_lcc(jobs_lcc, intersect)
 
     # substract the ones in common,
-    # these are the ones that are not on Webb County Website
+    # these are the ones that are not on LCC Website
     jobs_outdated = ids_workie - intersect 
     puts '-----------------------------'
 
