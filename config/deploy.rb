@@ -4,6 +4,7 @@ lock '3.1.0'
 set :application, 'wurkies'
 set :ssh_options, { :forward_agent => true }
 set :repo_url, 'git@github.com:leonels/workieworkie.git'
+set :repository, 'https://deploy:password@github.com/leonels/workieworkie.git'
 # set :repo_url, 'https://github.com/leonels/workieworkie.git'
 
 
