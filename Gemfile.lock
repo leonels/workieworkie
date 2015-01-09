@@ -86,6 +86,7 @@ GEM
     ffi (1.9.6)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
+    headless (1.0.2)
     hike (1.2.3)
     hirb (0.7.2)
     http-cookie (1.0.2)
@@ -222,6 +223,7 @@ DEPENDENCIES
   capistrano-rbenv!
   coffee-rails (~> 4.0.0)
   devise
+  headless
   hirb
   jbuilder (~> 2.0)
   jquery-rails

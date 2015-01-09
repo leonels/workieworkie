@@ -1,8 +1,23 @@
 require "#{Rails.root}/lib/helpers/uisd_helper"
+require 'selenium-webdriver'
+require 'headless'
 
 include UisdHelper
 
+def setup
+  @headless = Headless.new
+  @headless.start
+  @driver = Selenium::WebDriver.for :firefox
+end
+
+def teardown
+  @driver.quit
+  @headless.destroy
+end
+
 namespace :scrape_uisd do
+
+  setup
 
   desc 'sync UISD'
   task :sync => :environment do
@@ -60,6 +75,8 @@ namespace :scrape_uisd do
     puts "#{jobs_to_add.size} jobs will be added."
     Rake::Task['scrape_uisd:import'].invoke(jobs_to_add) unless jobs_to_add.empty?
     puts '-----------------------------'
+
+    teardown
   end
 
   desc 'Import United ISD jobs to database'
